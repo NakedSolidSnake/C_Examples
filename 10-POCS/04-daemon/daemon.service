@@ -1,0 +1,14 @@
+[Unit]
+Description=Server ToUpper
+After=network.target
+StartLimitIntervalSec=1
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=cssouza
+ExecStart=/home/cssouza/toupper/bin/server
+
+[Install]
+WantedBy=multi-user.target

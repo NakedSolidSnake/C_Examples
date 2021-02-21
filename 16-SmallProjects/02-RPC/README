@@ -1,0 +1,71 @@
+Projeto RPC
+
+Um cliente pode inserir um cadastro em um banco de dados
+através de um servidor por meio do protocolo HTTP utilizando 
+REST onde os metodos representarão quais irão ser as ações 
+no lado do servidor.
+
+Componentes
+
+Banco de Dados -> Será usado MySQL para hospedar as informações
+provenientes pelo cliente 
+
+Servidor -> O servidor tem a funcionalidade de interligar o 
+cliente com o banco de dados atraves do protocolo HTTP 
+
+Cliente -> Realizará as requisições atraves do protocolo HTTP 
+utilizando REST 
+onde vai conter os seguintes verbos
+
+GET
+DELETE
+POST 
+UPDATE
+
+Os dados que irão trafegar via HTTP terão formato json
+
+            +---> interface para acesso com o banco de dados 
+            |                      +---> Comunicação via REST utizando formato json  
+  MySQL     |                      | 
++-------+   |   +----------+       |          +---------+
+| Banco |---+---| Servidor |-------+----------| Cliente |
++-------+       +----------+                  +---------+
+
+Todo o projeto deverá ser feito em C 
+
+O servidor deverá ser capaz de atender multiplos clientes
+
+Funcionamento 
+
+O Cliente será capaz de criar, consultar, atualizar e apagar um aluno 
+O Cliente terá uma interface grafica para poder realizar as suas ações
+
+Ao utilizar quaisquer uma das suas ações os dados serão serializados 
+em formato json e transmitidos ao servidor através de HTTP utililzando
+REST.
+
+Ao receber os dados o servidor irá deserializar os dados e preencher 
+os dados do aluno na sua respectiva estrutura e realizar uma ação 
+no Banco de dados
+
+
+Classe Aluno 
+
+atributos 
+id          int 
+nome        char *
+matricula   int 
+idade       unsigned char 
+curso       char *
+
+mapa relacional
+id        - inteiro 
+nome      - varchar
+matricula - inteiro
+idade     - inteiro 
+curso     - varchar
+
+
+instalação ubuntu mysqlclient-dev 
+
+$ sudo apt-get install libmysqlclient-dev 

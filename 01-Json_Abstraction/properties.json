@@ -1,0 +1,25 @@
+{
+
+    "config" : "any",
+    "network":{
+        "ssid" : "myssid",
+        "mac": "00:11:22:33:44:55:66",
+        "password" : "my_pass"
+    },
+    "database":{
+        "password": "my_pass",
+        "username": "user",
+        "hostname": "localhost",
+        "database": "dbtest"
+    },
+
+    "mqtt":{
+        "password": "password",
+        "user": "user",
+        "topic": {
+            "button": "/button/state",
+            "led": "/led/state"
+        }
+    },
+    "dummy" : 10
+}

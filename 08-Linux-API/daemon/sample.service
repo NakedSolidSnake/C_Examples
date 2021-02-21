@@ -1,0 +1,9 @@
+[Unit]
+Description=Test to apply on SNP
+
+[Service]
+Type=simple
+ExecStart=/media/cssouza/SOLIDCRIS/repositories/c_language/08-Linux-API/daemon
+
+[Install]
+WantedBy=multi-user.target

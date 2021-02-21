@@ -1,0 +1,45 @@
+This project is about create just small screen where it is possible to store data from a user like name, age and address.
+After gets the data throught a button it will store the domain data into databse where in other ocasion it will be possible
+retrieve the data and shows up in the screen to consult.
+
+Functional requirements
+
+The screen needs to have a textfield to get name and address from the user.
+The screen needs to have a spinbox to set the user age;
+The screen needs to have a button to submit data into database;
+
+mainwindow
+
++-----------------------------------------------+
+| File Action About                           |x|
+|                                               |
+| +-------------------------------------------+ |
+| |      Name       |     Address    |   Age  | |
+| +-------------------------------------------+ |
+| | Cristiano Silva | Rua Nova Vida  |   34   | |
+| +-------------------------------------------+ |
+|                            +---------------+  |
+|                            |     INSERT    |  |
+|                            +---------------+  |
++-----------------------------------------------+
+
+addwindow
++-----------------------------------------------+
+|                                             |x|
+|                                               |
+|             +------------------------+        |
+|  Name       |                        |        |
+|             +------------------------+        |
+|             +------------------------+        |
+|  address    |                        |        |
+|             +------------------------+        |
+|             +--------+                        |
+|  age        |        |                        |
+|             +--------+                        |
+|                                               |
+|                       +--------+ +-------+    |
+|                       | Submit | | Close |    |
+|                       +--------+ +-------+    |
++-----------------------------------------------+
+
+Houve um mal-entendido pela minha parte, devido ao volume chamado de area controlada estar interferindo nas outras áeras, pensei que era possível associar alguma área com um determinada pista

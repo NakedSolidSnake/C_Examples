@@ -1,0 +1,10 @@
+How compile
+
+create a folder build and get into it
+$ mkdir build && build
+
+execute cmake command to create all necessary files
+$ cmake ..
+
+after this command the Makefile will be generated so execute make command
+$ make

@@ -1,0 +1,9 @@
+#!/bin/bash 
+
+if [ "$UID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
+echo "Creating link"
+ln -fs /home/cssouza/launcher/dat/launcher.service /etc/systemd/system/launcher.service

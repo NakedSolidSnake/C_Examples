@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "program_a.h": "c",
+        "common.h": "c",
+        "system_memory.h": "c",
+        "aux.h": "c"
+    }
+}

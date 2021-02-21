@@ -1,0 +1,16 @@
+Cross compile application
+
+this example shows how to compile 
+for two environments PC and Raspberry Pi 3
+
+How compile 
+
+In root application folder 
+
+$ mkdir build && cd build 
+
+To compile for PC 
+$ cmake .. -DARCH=PC 
+
+To compile for Raspberry 
+$ cmake .. -DARHC=RASPBERRY

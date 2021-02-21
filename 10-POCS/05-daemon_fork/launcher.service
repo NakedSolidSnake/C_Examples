@@ -1,0 +1,14 @@
+[Unit]
+Description=Multiprocess
+After=network.target
+StartLimitIntervalSec=1
+
+[Service]
+Type=forking
+Restart=always
+RestartSec=1
+User=cssouza
+ExecStart=/home/cssouza/launcher/bin/launch
+
+[Install]
+WantedBy=multi-user.target

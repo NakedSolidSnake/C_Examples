@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "tasks.h": "c",
+        "program_a.h": "c",
+        "program_b.h": "c"
+    }
+}

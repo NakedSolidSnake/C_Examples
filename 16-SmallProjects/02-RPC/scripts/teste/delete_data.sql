@@ -1,1 +1,0 @@
-DELETE FROM alunos Where id = 2;

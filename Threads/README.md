@@ -4,7 +4,7 @@
 Implement a server using Thread Poll pattern
 
 ## cond.c
-Example about use Thread condition
+Example about use Thread condition [cond.c](cond.c)
 
 ## creating_thread.c
 Example about create a thread

@@ -1,7 +1,7 @@
 #include <interface.h>
 #include <stdlib.h>
 
-static Interface *__interface = NULL;
+static const  Interface *__interface = NULL;
 
 bool Config(const Interface *interface)
 {

@@ -18,12 +18,19 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_BUILD_TYPE Debug)
 
+string(COMPARE EQUAL "${DATABASE}" "" result)
+if(result)
+  message("-- Setting File as default.")      
+  set (DATABASE "file")  
+endif()
+
 add_executable(interface "")
 # target_link_libraries(interface PUBLIC ${CMAKE_CURRENT_LIST_DIR}/libjsmn.a)
 target_sources(interface
   PUBLIC 
   ${CMAKE_CURRENT_LIST_DIR}/src/main.c
   ${CMAKE_CURRENT_LIST_DIR}/src/interface.c
+  ${CMAKE_CURRENT_LIST_DIR}/src/${DATABASE}/database.c
   )
 target_include_directories(interface 
   PUBLIC 

@@ -106,13 +106,11 @@ uma vez a interface preechida podemos executar a função que possui a regra de 
 ```c
 if (run_toogle_led(&interface, 1) == false)
     printf("Error.\n");
-```c
+```
 
 Essa função não deve retornar em caso de sucesso, assim podemos ver o output alterando o estado do LED atráves do printf.
 
-Agora o mesmo exemplo portado e preechido com as funções do Arduino, para atender os requisitos
-do contrato para o caso do atraso temos o delay( essa função está milisegundos é necessário multiplicar por 1000 para ter a base em segundos ), para o init temos o pinMode, e finalmente para o set 
-temos um digitalWrite alterando o valor do estado recebido, ficando o resultado da implementação 
+Agora o mesmo exemplo portado e preechido com as funções do Arduino, para atender os requisitos do contrato para o caso do atraso temos o delay( essa função está milisegundos é necessário multiplicar por 1000 para ter a base em segundos ), para o init temos o pinMode, e finalmente para o set temos um digitalWrite alterando o valor do estado recebido, ficando o resultado da implementação 
 
 ```c
 static void arduino_init(void)

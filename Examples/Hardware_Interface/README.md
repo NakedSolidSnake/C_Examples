@@ -1,0 +1,167 @@
+# Protegendo a regra de negócio de dependências por plataformas
+
+Todo o projeto possui sua regra de negócio, e essa regra de negócio deve ser
+independente da plataforma utilizada, o que normalmente acontece durante o 
+ciclo de vida de um produto, sendo reduzindo os custos utilizando plataformas de 
+baixo custo, ou até mesmo escolhendo uma plataforma que possua mais recursos para que o 
+produto se torne diferenciado frente a concorrencia. Mas para blindar o projeto de possíveis
+depências geradas pela utilização de uma arquitetura específica, sempre devemos pensar nessas 
+plataformas em um meio de viabilizar o projeto e não deixar que o projeto dependa da plataforma.
+Uma frase bastante conhecida é Programe para uma interface e não para uma implementação.
+
+Para exemplificar de forma prática vamos criar uma regra de negócio bem simples como piscar um LED
+dentro de um certo intervalo de tempo.
+
+Para que essa regra de negócio funcione em qualquer tipo de plataforma devemos identificar as caracteristicas que variam entre as plaformas para que possamos criar uma interface encapsulando
+essas variações, nesse exemplo precisamos de um mecanismo que espere por em determinado periodo de 
+tempo, uma inicialização para que possa ser configurado as depencias da plataforma e por fim um mecanismo que nos permita mudar o estado lógico do LED.
+Com essas caracteristicas podemos definir como vai ser a interface
+
+```c
+typedef struct 
+{
+    void (*init)(void);
+    void (*wait)(int seconds);
+    void (*set)(uint8_t state);
+} Interface;
+```
+
+Com a interface definida podemos implementar a regra de negócio, dessa forma blindando contra as 
+nuancias de uma determinada plataforma.
+
+```c
+bool run_toogle_led(Interface *interface, int _delay);
+```
+
+Essa função é responsável por processar a alternancia do LED baseada no atraso fornecido pelo parametro _delay, dito isso podemos ver como fica a implementação dessa função
+
+```c
+bool run_toogle_led(Interface *interface, int _delay)
+{
+    bool is_init = is_initialized(interface);
+    uint8_t state = 0;
+    
+    if(is_init)
+    {
+        interface->init();
+
+        while(true)
+        {
+            interface->wait(_delay);
+            interface->set(state);
+            state ^= 0x01;
+        }
+    }    
+}
+```
+
+aqui temos uma função privada que verifica se todos os ponteiros de função foram inicializados
+caso estejam todos devidamente configurados retorna um true indicando que tudo ocorreu bem, no if 
+verificamos o retorno e caso verdadeiro chama o init que é responsável pelas configurações iniciais
+da plaforma, e emseguida tempos o while que é coração da regra de negócio onde aguardasse um tempo 
+e aplica o estado do LED em seguida complementa o valor e segue assim até a eternidade finita.
+Dessa forma garantimos que a regra de negócio irá funcionar independente da plaforma, ficando a cargo da plataforma a implementação das funções do contrato fornecida pela interface para garantir 
+o funcionamento, e isolando as espeficidades da plataforma no próprio main
+
+Para simular esse exemplo iremos usar a plataforma PC(Personal Computer) rodando um Linux como sistema operacional, e o módulo Arduino 
+
+No primeiro caso (PC) para preencher a interface analisamos quais funções podem atender os requisitos
+do contrato para o caso do atraso temos o sleep, para o init temos o printf, e finalmente para o set 
+temos um printf imprimindo o valor do estado recebido, ficando o resultado da implementação 
+
+```c
+static void pc_init(void)
+{
+    printf("Init.\n");
+}
+```
+
+```c
+static void pc_wait(int seconds)
+{
+    sleep(seconds);
+}
+```
+
+```c
+static void pc_set(uint8_t state)
+{
+    printf("state = %d\n", state);
+}
+```
+
+com isso podemos assinar o contrato pois as funções respeitam as assinaturas fornecidas pela interface ficando dessa forma
+
+```c
+ Interface interface = 
+    {
+        .init = pc_init,
+        .wait = pc_wait,
+        .set = pc_set
+    };
+```
+
+uma vez a interface preechida podemos executar a função que possui a regra de negócio propriamente dita
+
+```c
+if (run_toogle_led(&interface, 1) == false)
+    printf("Error.\n");
+```c
+
+Essa função não deve retornar em caso de sucesso, assim podemos ver o output alterando o estado do LED atráves do printf.
+
+Agora o mesmo exemplo portado e preechido com as funções do Arduino, para atender os requisitos
+do contrato para o caso do atraso temos o delay( essa função está milisegundos é necessário multiplicar por 1000 para ter a base em segundos ), para o init temos o pinMode, e finalmente para o set 
+temos um digitalWrite alterando o valor do estado recebido, ficando o resultado da implementação 
+
+```c
+static void arduino_init(void)
+{
+	pinMode(13, OUTPUT);
+}
+```
+```c
+static void arduino_wait(int seconds)
+{
+    delay(seconds * 1000);
+}
+```
+```c
+static void arduino_set(uint8_t state)
+{
+    digitalWrite(13, state);
+}
+```
+Declaramos a interface e preechemos com as funções do arduino
+
+```c
+Interface interface =
+   {
+       .init = arduino_init,
+       .wait = arduino_wait,
+       .set  = arduino_set
+   };
+```
+
+no setup não precisamos preencher nada, ai realizamos a chamada da função run_toogle_led na função loop
+
+```c
+void loop() {
+	run_toogle_led(&interface, 1000);
+}
+```
+
+Pronto a mesma regra de negócio funcionando em plataformas distintas.
+
+Conclusão 
+
+O uso da interface garante que a regra de negócio não sofrerá alterações por caracteristicas externas, como hardware, estrutura de dados e API's externas ao projeto, sendo necessário que esses componentes externos a regra de negócio respeitem a interface, assim resolvendo essas variações através de funções padronizadas.
+
+
+
+
+
+
+
+
+

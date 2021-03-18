@@ -1,4 +1,6 @@
-# Protegendo a regra de negócio de dependências por plataformas
+# Protegendo a regra de negócio através de interface
+
+Esse artigo descreve o processo de encapsulamento da regra de negócio garantindo que a mesma sempre funcione independentemente da plataforma empregada.
 
 ## Introdução
 Todo o projeto possui sua regra de negócio, e essa regra de negócio deve ser independente da plataforma utilizada, o que normalmente não acontece durante o ciclo de vida de um produto, sendo, reduzindo os custos utilizando plataformas de baixo custo, ou até mesmo escolhendo uma plataforma que possua mais recursos para que o produto se torne diferenciado frente a concorrência. Mas para blindar o projeto de possíveis dependências geradas pela utilização de uma plataforma específica, sempre devemos pensar nessas plataformas em um meio de viabilizar o projeto e não deixar que o projeto dependa da plataforma. Uma frase bastante conhecida é Programe para uma interface e não para uma implementação.

@@ -12,9 +12,9 @@ Para que essa regra de negócio funcione em qualquer tipo de plataforma devemos 
 typedef struct 
 {
     void (*init)(void);
-    void (*wait)(int seconds);
+    void (*wait)(uint16_t seconds);
     void (*set)(uint8_t state);
-} Interface;
+} hw_interface;
 ```
 As assinaturas da interface não são rigidas no primeiro momento, mas deve ter em mente que uma vez que ganhar maturidade, é estritamente importante evitar mudá-las, para que no futuro não comprometa implementações legadas.
 
@@ -22,15 +22,15 @@ As assinaturas da interface não são rigidas no primeiro momento, mas deve ter 
 Com a interface definida podemos implementar a regra de negócio, dessa forma blindando contra as nuances de uma determinada plataforma.
 
 ```c
-bool run_toogle_led(Interface *interface, int _delay);
+bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds);
 ```
 
 Essa função é responsável por processar a alternância do LED baseada no atraso fornecido pelo parâmetro __delay_, dito isso podemos ver como fica a implementação dessa função
 
 ```c
-bool run_toogle_led(Interface *interface, int _delay)
+bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds)
 {
-    bool is_init = is_initialized(interface);
+    bool is_init = hw_is_initialized(interface);
     uint8_t state = 0;
     
     if(is_init)
@@ -46,7 +46,7 @@ bool run_toogle_led(Interface *interface, int _delay)
     }    
 }
 ```
-aqui temos uma função privada que verifica se todos os ponteiros de função foram inicializados, caso estejam todos devidamente configurados retorna um true indicando que tudo ocorreu bem, no if verificamos o retorno e caso verdadeiro chama o init que é responsável pelas configurações iniciais da plaforma, e em seguida temos o while que é coração da regra de negócio onde se aguarda um tempo e aplica o estado do LED, em seguida complementa o valor e segue assim até a eternidade finita. Dessa forma garantimos que a regra de negócio irá funcionar independente da plaforma, ficando a cargo da plataforma a implementação das funções do contrato fornecida pela interface para garantir o funcionamento, e isolando as espeficidades da plataforma no próprio main
+Aqui temos uma função privada que verifica se todos os ponteiros de função foram inicializados, caso estejam todos devidamente configurados retorna um true indicando que tudo ocorreu bem, no if verificamos o retorno e caso verdadeiro chama o init que é responsável pelas configurações iniciais da plaforma, e em seguida temos o while que é coração da regra de negócio onde se aguarda um tempo e aplica o estado do LED, em seguida complementa o valor e segue assim até a eternidade finita. Dessa forma garantimos que a regra de negócio irá funcionar independente da plaforma, ficando a cargo da plataforma a implementação das funções do contrato fornecida pela interface para garantir o funcionamento, e isolando as espeficidades da plataforma no próprio main
 
 Para simular esse exemplo iremos usar a plataforma PC(Personal Computer) rodando um Linux como sistema operacional, e o módulo Arduino 
 
@@ -74,21 +74,21 @@ static void pc_set(uint8_t state)
 }
 ```
 
-com isso podemos assinar o contrato pois as funções respeitam as assinaturas fornecidas pela interface ficando dessa forma
+Com isso podemos assinar o contrato pois as funções respeitam as assinaturas fornecidas pela interface ficando dessa forma
 
 ```c
- Interface interface = 
-    {
-        .init = pc_init,
-        .wait = pc_wait,
-        .set = pc_set
-    };
+hw_interface interface = 
+{
+   .init = pc_init,
+   .wait = pc_wait,
+   .set = pc_set
+};
 ```
 
-uma vez a interface preechida podemos executar a função que possui a regra de negócio propriamente dita
+Uma vez a interface preechida podemos executar a função que possui a regra de negócio propriamente dita
 
 ```c
-if (run_toogle_led(&interface, 1) == false)
+if (hw_run_toogle_led(&interface, 1) == false)
     printf("Error.\n");
 ```
 
@@ -127,19 +127,19 @@ static void arduino_set(uint8_t state)
 Declaramos a interface e preenchemos com as funções do arduino
 
 ```c
-Interface interface =
-   {
-       .init = arduino_init,
-       .wait = arduino_wait,
-       .set  = arduino_set
-   };
+hw_interface interface =
+{
+   .init = arduino_init,
+   .wait = arduino_wait,
+   .set  = arduino_set
+};
 ```
 
 no setup não precisamos preencher nada, ai realizamos a chamada da função run_toogle_led na função loop
 
 ```c
 void loop() {
-	run_toogle_led(&interface, 1000);
+	hw_run_toogle_led(&interface, 1);
 }
 ```
 
@@ -151,17 +151,24 @@ Como resultado o LED presente na placa irá ficar piscando.
 #ifndef HW_INTERFACE_H_
 #define HW_INTERFACE_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
 
 typedef struct 
 {
     void (*init)(void);
-    void (*wait)(int seconds);
+    void (*wait)(uint16_t seconds);
     void (*set)(uint8_t state);
-} Interface;
+} hw_nterface;
 
-bool run_toogle_led(Interface *interface, int _delay);
+bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds);
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* HW_INTERFACE_H_ */
 
@@ -170,11 +177,11 @@ bool run_toogle_led(Interface *interface, int _delay);
 ```c
 #include "hw_interface.h"
 
-static bool is_initialized(Interface *interface);
+static bool hw_is_initialized(Interface *interface);
 
-bool run_toogle_led(Interface *interface, int _delay)
+bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds)
 {
-    bool is_init = is_initialized(interface);
+    bool is_init = hw_is_initialized(interface);
     uint8_t state = 0;
     
     if(is_init)
@@ -192,7 +199,7 @@ bool run_toogle_led(Interface *interface, int _delay)
     return is_init;    
 }
 
-static bool is_initialized(Interface *interface)
+static bool hw_is_initialized(Interface *interface)
 {
     bool is_config = true;
 
@@ -220,7 +227,7 @@ static void arduino_init(void);
 static void arduino_wait(int seconds);
 static void arduino_set(uint8_t state);
 
-Interface interface =
+hw_interface interface =
    {
        .init = arduino_init,
        .wait = arduino_wait,
@@ -232,12 +239,12 @@ void setup() {
 }
 
 void loop() {
-	run_toogle_led(&interface, 1);
+    hw_run_toogle_led(&interface, 1);
 }
 
 static void arduino_init(void)
 {
-	pinMode(13, OUTPUT);
+    pinMode(13, OUTPUT);
 }
 
 static void arduino_wait(int seconds)
@@ -259,19 +266,19 @@ static void arduino_set(uint8_t state)
 
 /* Functions to use in the interface */
 static void pc_init(void);
-static void pc_wait(int seconds);
+static void pc_wait(uint16_t seconds);
 static void pc_set(uint8_t state);
 
 int main(void)
 {
-    Interface interface = 
+    hw_interface interface = 
     {
         .init = pc_init,
         .wait = pc_wait,
         .set = pc_set
     };
 
-    if (run_toogle_led(&interface, 1) == false)
+    if (hw_run_toogle_led(&interface, 1) == false)
         printf("Error.\n");
 }
 

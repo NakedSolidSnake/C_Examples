@@ -2,6 +2,14 @@
 #include <curl/curl.h>
 #include <string.h>
 
+#define CSP_MEMORY_SIZE (1024 * 8)
+
+typedef struct 
+{
+   char response[CSP_MEMORY_SIZE];
+   size_t size;
+} csp_memory_t;
+
 typedef struct 
 {   
     uint8_t id;
@@ -17,7 +25,7 @@ typedef struct
 
 static csp_client_list_t csp_list;
 
-static size_t csp_got_data(char *buffer, size_t itemsize, size_t nitems, void *data);
+static size_t csp_got_data(char *data, size_t itemsize, size_t nitems, void *user_data);
 
 bool csp_client_init(csp_client_t *object)
 {
@@ -33,11 +41,19 @@ bool csp_client_init(csp_client_t *object)
 
 bool csp_client_request_register(uint8_t id, const char *query, request callback)
 {
-    csp_list.csp_data[csp_list.amount].id = id;
-    strncpy(csp_list.csp_data[csp_list.amount].query, query, CSP_QUERY_SIZE);
-    csp_list.csp_data[csp_list.amount].callback = callback;
+    bool is_ok = false;
+    if(csp_list.amount < CSP_CLIENT_LIST_SIZE)
+    {
+        csp_list.csp_data[csp_list.amount].id = id;
+        strncpy(csp_list.csp_data[csp_list.amount].query, query, CSP_QUERY_SIZE);
+        csp_list.csp_data[csp_list.amount].callback = callback;
 
-    csp_list.amount++;
+        csp_list.amount++;
+
+        is_ok = true;
+    }
+
+    return is_ok;
 }
 
 bool csp_client_request_emit_by_id(csp_client_t *object, uint8_t id, char *output)
@@ -57,14 +73,20 @@ bool csp_client_request_emit_by_id(csp_client_t *object, uint8_t id, char *outpu
 
 bool csp_client_request_emit(csp_client_t *object, const char *query, char *output, uint32_t *size, request callback)
 {
+    csp_memory_t memory = {0};
     CURLcode result;
-    if(callback)
-        curl_easy_setopt(object->context, CURLOPT_WRITEDATA, callback);
+    
+    curl_easy_setopt(object->context, CURLOPT_WRITEDATA, &memory);
     //defaul callback ?
 
     curl_easy_setopt(object->context, CURLOPT_URL, query);
 
     result = curl_easy_perform(object->context);
+
+    if (callback && result == CURLE_OK) 
+    {
+        callback(memory.response, (uint32_t *)&memory.size);
+    }
 
     return result == CURLE_OK ? true : false;
 }
@@ -86,14 +108,14 @@ bool csp_client_close(csp_client_t *object)
 }
 
 
-static size_t csp_got_data(char *buffer, size_t itemsize, size_t nitems, void *data)
+static size_t csp_got_data(char *data, size_t itemsize, size_t nitems, void *user_data)
 {
     size_t bytes = itemsize * nitems;
-    printf("bytes = %ld.\n", bytes);
-    
-    request callback = data;
 
-    callback(buffer, (uint32_t *)&bytes);
+    csp_memory_t *mem = (csp_memory_t *)user_data;
 
+    memcpy(&(mem->response[mem->size]), data, bytes);
+    mem->size += bytes;
+    mem->response[mem->size] = 0;
     return bytes;
 }

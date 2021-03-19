@@ -27,7 +27,7 @@ Com a interface definida podemos implementar a regra de negócio, dessa forma bl
 bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds);
 ```
 
-Essa função é responsável por processar a alternância do LED baseada no atraso fornecido pelo parâmetro __delay_, dito isso podemos ver como fica a implementação dessa função
+Essa função é responsável por processar a alternância do LED baseada no atraso fornecido pelo parâmetro _seconds_, dito isso podemos ver como fica a implementação dessa função
 
 ```c
 bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds)
@@ -41,7 +41,7 @@ bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds)
 
         while(true)
         {
-            interface->wait(_delay);
+            interface->wait(seconds);
             interface->set(state);
             state ^= 0x01;
         }
@@ -137,7 +137,7 @@ hw_interface interface =
 };
 ```
 
-no setup não precisamos preencher nada, ai realizamos a chamada da função run_toogle_led na função loop
+no setup não precisamos preencher nada, ai realizamos a chamada da função hw_run_toogle_led na função loop
 
 ```c
 void loop() {
@@ -179,7 +179,7 @@ bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds);
 ```c
 #include "hw_interface.h"
 
-static bool hw_is_initialized(Interface *interface);
+static bool hw_is_initialized(hw_interface *interface);
 
 bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds)
 {
@@ -192,7 +192,7 @@ bool hw_run_toogle_led(hw_interface *interface, uint16_t seconds)
 
         while(true)
         {
-            interface->wait(_delay);
+            interface->wait(seconds);
             interface->set(state);
             state ^= 0x01;
         }

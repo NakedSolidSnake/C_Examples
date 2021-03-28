@@ -5,6 +5,8 @@ int main(int argc, char *argv[])
     GtkBuilder *builder;
     GtkWidget *window;
 
+    gtk_init(&argc, &argv);
+
     builder = gtk_builder_new();
     gtk_builder_add_from_file(builder, "window_main.glade", NULL);
 

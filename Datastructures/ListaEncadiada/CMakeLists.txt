@@ -9,7 +9,6 @@ set(CMAKE_BUILD_TYPE Debug)
 
 #build track
 add_executable(lista_encadiada "")
-# target_link_libraries(csp_client PUBLIC curl)
 
 target_sources(lista_encadiada
   PUBLIC 

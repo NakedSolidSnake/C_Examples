@@ -1,3 +1,6 @@
 build
 *.out
 *.o
+*.db
+.vscode
+CSP

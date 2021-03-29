@@ -1,50 +1,27 @@
 #include <interface.h>
 #include <stdlib.h>
 
-static const  Interface *__interface = NULL;
 
-bool Config(const Interface *interface)
+bool Init(const Interface *interface, void *args)
 {
-    bool is_initialized = true;
-    if(!interface)
-        is_initialized = false;
-    else if (!interface->init)  
-        is_initialized = false;
-    else if(!interface->open)  
-        is_initialized = false;
-    else if(!interface->set)  
-        is_initialized = false;
-    else if(!interface->get)  
-        is_initialized = false;
-    else if(!interface->close)  
-        is_initialized = false;   
-
-    __interface = interface;
-
-    return is_initialized;
+    interface->init(args);
 }
 
-bool Init(void *args)
+bool Open(const Interface *interface, void *args)
 {
-    return __interface->init(args);
+    interface->open(args);
+}
+bool Set(const Interface *interface, void *args)
+{
+    return interface->set(args);
 }
 
-bool Open(void *args)
+bool Get(const Interface *interface, void *args)
 {
-    return __interface->open(args);
+    return interface->get(args);
 }
 
-bool Set(void *args)
+bool Close(const Interface *interface, void *args)
 {
-    return __interface->set(args);
-}
-
-bool Get(void *args)
-{
-    return __interface->get(args);
-}
-
-bool Close(void *args)
-{
-    return __interface->close(args);
+    return interface->close(args);
 }

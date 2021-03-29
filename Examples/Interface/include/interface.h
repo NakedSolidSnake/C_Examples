@@ -12,12 +12,10 @@ typedef struct
     bool (*close)(void *args);
 } Interface;
 
-
-bool Config(const Interface *interface);
-bool Init(void *args);
-bool Open(void *args);
-bool Set(void *args);
-bool Get(void *args);
-bool Close(void *args);
+bool Init(const Interface *interface, void *args);
+bool Open(const Interface *interface, void *args);
+bool Set(const Interface *interface, void *args);
+bool Get(const Interface *interface, void *args);
+bool Close(const Interface *interface, void *args);
 
 #endif /* INTERFACE_H_ */

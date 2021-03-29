@@ -30,11 +30,16 @@ target_sources(interface
   PUBLIC 
   ${CMAKE_CURRENT_LIST_DIR}/src/main.c
   ${CMAKE_CURRENT_LIST_DIR}/src/interface.c
-  ${CMAKE_CURRENT_LIST_DIR}/src/${DATABASE}/database.c
+  ${CMAKE_CURRENT_LIST_DIR}/src/factory/database_factory.c
+  ${CMAKE_CURRENT_LIST_DIR}/src/file/file_base.c
+  ${CMAKE_CURRENT_LIST_DIR}/src/mysql/mysql_base.c
   )
 target_include_directories(interface 
   PUBLIC 
-  ${CMAKE_CURRENT_LIST_DIR}/
+  ${CMAKE_CURRENT_LIST_DIR}/include
+  ${CMAKE_CURRENT_LIST_DIR}/src/factory
+  ${CMAKE_CURRENT_LIST_DIR}/src/file
+  ${CMAKE_CURRENT_LIST_DIR}/src/mysql
   )
 
 target_include_directories(interface 

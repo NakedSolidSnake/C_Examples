@@ -5,3 +5,5 @@ build
 .vscode
 CSP
 CSPEnum
+OpenGL/Lazy
+SDL/Lazy_tutorial

@@ -1,0 +1,6 @@
+# install ssl lib dev
+$ sudo apt-get install libssl–dev
+
+# create a certificate
+$ openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
+

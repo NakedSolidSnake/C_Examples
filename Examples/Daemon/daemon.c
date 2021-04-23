@@ -4,23 +4,30 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <syslog.h>
+
+void call_log(int counter)
+{
+    openlog("Daemon", LOG_PID | LOG_CONS , LOG_USER);
+    syslog(LOG_INFO, "Counter : %d", counter);
+    closelog();
+}
 
 int main(int argc, char* argv[])
 {
-  FILE *fp = NULL;
   pid_t process_id = 0;
   pid_t sid = 0;
 
   process_id = fork();
   if(process_id < 0)
   {
-    printf("fork failed.\n");
+    printf("fork falhou.\n");
     exit(1);
   }
 
   if(process_id > 0)
   {
-    printf("process_id of child process %d\n", process_id);
+    printf("PID do processo filho %d\n", process_id);
     exit(0);
   }
 
@@ -38,16 +45,14 @@ int main(int argc, char* argv[])
   close(STDOUT_FILENO);
   close(STDERR_FILENO);
 
-  fp = fopen("Log.txt", "w+");
-  if(fp == NULL)
-    return 1;
+
+  int i = 0;
 
   while(1)
   {
+    call_log(i++);
     sleep(1);
-    fprintf(fp, "Logging info...\n");
-    fflush(fp); 
   }
-  fclose(fp);
+  
   return 0;
 }

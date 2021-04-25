@@ -1,11 +1,13 @@
-//
-//  status.c
-//  sdl2_testing
-//
-//  Created by Mike Farrell on 10/9/13.
-//  Copyright (c) 2013 Mike Farrell. All rights reserved.
-//
-
+/**
+ * @file status.c
+ * @author Mike Farrell
+ * @brief A game example 
+ * @version 0.1
+ * @date 2013-09-10
+ * 
+ * @copyright Copyright (c) 2013 Mike Farrell. All rights reserved.
+ * 
+ */
 
 #include <stdio.h>
 #include <main.h>

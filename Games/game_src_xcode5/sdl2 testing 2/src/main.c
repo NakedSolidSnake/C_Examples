@@ -1,4 +1,13 @@
-
+/**
+ * @file main.c
+ * @author Mike Farrell
+ * @brief A game example 
+ * @version 0.1
+ * @date 2013-09-10
+ * 
+ * @copyright Copyright (c) 2013 Mike Farrell. All rights reserved.
+ * 
+ */
 
 #include <stdio.h>
 #include <time.h>
@@ -468,16 +477,7 @@ int processEvents(SDL_Window *window, GameState *game)
       game->man.dx = 0;
     }
   }
-  
-//  if(state[SDL_SCANCODE_UP])
-//  {
-//    game->man.y -= 10;
-//  }
-//  if(state[SDL_SCANCODE_DOWN])
-//  {
-//    game->man.y += 10;
-//  }
-  
+
   return done;
 }
 
@@ -559,7 +559,7 @@ int main(int argc, char *argv[])
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_AUDIO);              // Initialize SDL2
   
   gameState.joystick = SDL_JoystickOpen(0);
-  
+
   srandom((int)time(NULL));
   
   //Create an application window with the following settings:
@@ -598,9 +598,6 @@ int main(int argc, char *argv[])
     
     //Render display
     doRender(renderer, &gameState);
-    
-    //don't burn up the CPU
-    //SDL_Delay(10);
   }
   
 

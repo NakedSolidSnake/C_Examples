@@ -9,12 +9,18 @@ set(CMAKE_BUILD_TYPE Debug)
 
 #build track
 add_executable(track "")
-target_link_libraries(track PUBLIC pthread)
+# target_link_libraries(track PUBLIC pthread)
+target_link_libraries(track PUBLIC glut GLU GL)
 
 target_sources(track
   PUBLIC 
   ${CMAKE_CURRENT_LIST_DIR}/src/main.c
+  ${CMAKE_CURRENT_LIST_DIR}/src/graphics.c
   )
 
+target_include_directories(track
+  PUBLIC 
+  ${CMAKE_CURRENT_LIST_DIR}/include
+)
 install(TARGETS track DESTINATION bin)
 

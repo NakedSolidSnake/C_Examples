@@ -3,10 +3,10 @@
 
 void switch_player(game_t *game)
 {
-    if (game->player == PLAYER_X) {
-        game->player = PLAYER_O;
-    } else if (game->player == PLAYER_O) {
-        game->player = PLAYER_X;
+    if (game->player == Player_X) {
+        game->player = Player_O;
+    } else if (game->player == Player_O) {
+        game->player = Player_X;
     }
 }
 
@@ -62,18 +62,18 @@ int count_cells(const int *board, int cell)
 
 void game_over_condition(game_t *game)
 {
-    if (check_player_won(game, PLAYER_X)) {
-        game->state = PLAYER_X_WON_STATE;
-    } else if (check_player_won(game, PLAYER_O)) {
-        game->state = PLAYER_O_WON_STATE;
-    } else if (count_cells(game->board, EMPTY) == 0) {
-        game->state = TIE_STATE;
+    if (check_player_won(game, Player_X)) {
+        game->state = Player_X_Won;
+    } else if (check_player_won(game, Player_O)) {
+        game->state = Player_O_Won;
+    } else if (count_cells(game->board, Empty) == 0) {
+        game->state = Tie;
     }
 }
 
 void player_turn(game_t *game, int row, int column)
 {
-    if (game->board[row * N + column] == EMPTY) {
+    if (game->board[row * N + column] == Empty) {
         game->board[row * N + column] = game->player;
         switch_player(game);
         game_over_condition(game);
@@ -82,16 +82,16 @@ void player_turn(game_t *game, int row, int column)
 
 void reset_game(game_t *game)
 {
-    game->player = PLAYER_X;
-    game->state = RUNNING_STATE;
+    game->player = Player_X;
+    game->state = Running;
     for (int i = 0; i < N * N; ++i) {
-        game->board[i] = EMPTY;
+        game->board[i] = Empty;
     }
 }
 
 void click_on_cell(game_t *game, int row, int column)
 {
-    if (game->state == RUNNING_STATE) {
+    if (game->state == Running) {
         player_turn(game, row, column);
     } else {
         reset_game(game);

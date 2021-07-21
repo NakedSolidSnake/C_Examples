@@ -34,19 +34,21 @@ int main(int argc, char *argv[])
     }
 
     game_t game = {
-        .board = { EMPTY, EMPTY, EMPTY,
-                   EMPTY, EMPTY, EMPTY,
-                   EMPTY, EMPTY, EMPTY },
-        .player = PLAYER_X,
-        .state = RUNNING_STATE
+        .board = 
+        { Empty, Empty, Empty,
+          Empty, Empty, Empty,
+          Empty, Empty, Empty
+        },
+        .player = Player_X,
+        .state = Running
     };
 
     SDL_Event e;
-    while (game.state != QUIT_STATE) {
+    while (game.state != Quit) {
         while (SDL_PollEvent(&e)) {
             switch (e.type) {
             case SDL_QUIT:
-                game.state = QUIT_STATE;
+                game.state = Quit;
                 break;
 
             case SDL_MOUSEBUTTONDOWN:

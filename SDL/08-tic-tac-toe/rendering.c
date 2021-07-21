@@ -78,11 +78,11 @@ void render_board(SDL_Renderer *renderer,
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < N; ++j) {
             switch (board[i * N + j]) {
-            case PLAYER_X:
+            case Player_X:
                 render_x(renderer, i, j, player_x_color);
                 break;
 
-            case PLAYER_O:
+            case Player_O:
                 render_o(renderer, i, j, player_o_color);
                 break;
 
@@ -115,19 +115,19 @@ void render_game_over_state(SDL_Renderer *renderer,
 void render_game(SDL_Renderer *renderer, const game_t *game)
 {
     switch (game->state) {
-    case RUNNING_STATE:
+    case Running:
         render_running_state(renderer, game);
         break;
 
-    case PLAYER_X_WON_STATE:
+    case Player_X_Won:
         render_game_over_state(renderer, game, &PLAYER_X_COLOR);
         break;
 
-    case PLAYER_O_WON_STATE:
+    case Player_O_Won:
         render_game_over_state(renderer, game, &PLAYER_O_COLOR);
         break;
 
-    case TIE_STATE:
+    case Tie:
         render_game_over_state(renderer, game, &TIE_COLOR);
         break;
 

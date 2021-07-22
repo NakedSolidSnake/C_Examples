@@ -7,11 +7,6 @@
 #define CELL_WIDTH (SCREEN_WIDTH / N)
 #define CELL_HEIGHT (SCREEN_HEIGHT / N)
 
-
-// #define EMPTY 0
-// #define PLAYER_X 1
-// #define PLAYER_O 2
-
 typedef enum 
 {
     Empty,
@@ -28,16 +23,11 @@ typedef enum
     Quit
 } States;
 
-// #define RUNNING_STATE 0
-// #define PLAYER_X_WON_STATE 1
-// #define PLAYER_O_WON_STATE 2
-// #define TIE_STATE 3
-// #define QUIT_STATE 4
-
-typedef struct {
+typedef struct 
+{
     int board[N * N];
     Players player;
     States state;
-} game_t;
+} Game;
 
 #endif /* GAME_H */

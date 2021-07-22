@@ -1,7 +1,7 @@
 #include "./game.h"
 #include "./logic.h"
 
-void switch_player(game_t *game)
+void switch_player(Game *game)
 {
     if (game->player == Player_X) {
         game->player = Player_O;
@@ -10,7 +10,7 @@ void switch_player(game_t *game)
     }
 }
 
-int check_player_won(game_t *game, int player)
+int check_player_won(Game *game, int player)
 {
     int row_count = 0;
     int column_count = 0;
@@ -60,7 +60,7 @@ int count_cells(const int *board, int cell)
     return count;
 }
 
-void game_over_condition(game_t *game)
+void game_over_condition(Game *game)
 {
     if (check_player_won(game, Player_X)) {
         game->state = Player_X_Won;
@@ -71,7 +71,7 @@ void game_over_condition(game_t *game)
     }
 }
 
-void player_turn(game_t *game, int row, int column)
+void player_turn(Game *game, int row, int column)
 {
     if (game->board[row * N + column] == Empty) {
         game->board[row * N + column] = game->player;
@@ -80,7 +80,7 @@ void player_turn(game_t *game, int row, int column)
     }
 }
 
-void reset_game(game_t *game)
+void reset_game(Game *game)
 {
     game->player = Player_X;
     game->state = Running;
@@ -89,7 +89,7 @@ void reset_game(game_t *game)
     }
 }
 
-void click_on_cell(game_t *game, int row, int column)
+void click_on_cell(Game *game, int row, int column)
 {
     if (game->state == Running) {
         player_turn(game, row, column);

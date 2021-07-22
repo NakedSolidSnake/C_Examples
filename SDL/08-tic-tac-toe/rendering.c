@@ -92,7 +92,7 @@ void render_board(SDL_Renderer *renderer,
     }
 }
 
-void render_running_state(SDL_Renderer *renderer, const game_t *game)
+void render_running_state(SDL_Renderer *renderer, const Game *game)
 {
     render_grid(renderer, &GRID_COLOR);
     render_board(renderer,
@@ -102,7 +102,7 @@ void render_running_state(SDL_Renderer *renderer, const game_t *game)
 }
 
 void render_game_over_state(SDL_Renderer *renderer,
-                            const game_t *game,
+                            const Game *game,
                             const SDL_Color *color)
 {
     render_grid(renderer, color);
@@ -112,7 +112,7 @@ void render_game_over_state(SDL_Renderer *renderer,
                  color);
 }
 
-void render_game(SDL_Renderer *renderer, const game_t *game)
+void render_game(SDL_Renderer *renderer, const Game *game)
 {
     switch (game->state) {
     case Running:

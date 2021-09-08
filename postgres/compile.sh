@@ -1,3 +1,5 @@
+# https://zetcode.com/db/postgresqlc/
+
 gcc -o version.out version.c -I/usr/include/postgresql -lpq -std=c99
 gcc -o server_version.out server_version.c -I/usr/include/postgresql -lpq -std=c99
 gcc -o password_authetication.out password_authetication.c -I/usr/include/postgresql -lpq -std=c99

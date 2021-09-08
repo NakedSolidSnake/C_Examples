@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# https://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
+
 gcc -g sqlite_connect.c -o sqlite_connect.out -l sqlite3
 gcc -g sqlite_create_table.c -o sqlite_create_table.out -l sqlite3
 gcc -g sqlite_insert.c -o sqlite_insert.out -l sqlite3

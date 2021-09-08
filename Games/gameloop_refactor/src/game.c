@@ -9,6 +9,8 @@ static bool Game_Is_Valid(Game *game);
 static bool Game_API_Initialize(Game *game);
 static bool Game_Window_Initialize(Game *game);
 static bool Game_Render_Initialize(Game *game);
+static bool Game_Font_Initialize(Game *game);
+static bool Game_Load_Fonts(Game *game);
 static bool Game_Setup(Game *game);
 
 static bool Game_Process_Input(Game *game);
@@ -34,6 +36,8 @@ bool Game_Initialize(Game *game)
         Game_API_Initialize,
         Game_Window_Initialize,
         Game_Render_Initialize,
+        Game_Font_Initialize,
+        Game_Load_Fonts,
         Game_Setup
     };
 
@@ -126,6 +130,32 @@ static bool Game_Render_Initialize(Game *game)
     return status;
 }
 
+static bool Game_Font_Initialize(Game *game)
+{
+    bool status = true;
+
+    if(TTF_Init() < 0)
+    {
+        logger("Error TTF Initialize");
+        status = false;
+    }
+
+    return status;
+}
+
+
+static bool Game_Load_Fonts(Game *game)
+{
+    bool status = true;
+    game->font = TTF_OpenFont("Crazy-Pixel.ttf", 48);
+    if(!game->font)
+    {
+        logger("Cannot find font file.");
+        status = false;
+    }
+    return status;
+}
+
 static bool Game_Setup(Game *game)
 {
     // Initialize values for the the ball object
@@ -143,6 +173,8 @@ static bool Game_Setup(Game *game)
     game->paddle.point.y = WINDOW_HEIGHT - 40;
     game->paddle.speed.vx = 0;
     game->paddle.speed.vy = 0;
+
+    game->points = 0;
 
     return true;
 }
@@ -254,6 +286,7 @@ static bool Game_Destroy(Game *game)
 {
     SDL_DestroyRenderer(game->renderer);
     SDL_DestroyWindow(game->window);
+    TTF_CloseFont(game->font);
     SDL_Quit();
     return true;
 }

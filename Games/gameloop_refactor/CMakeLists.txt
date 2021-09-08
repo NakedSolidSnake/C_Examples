@@ -20,7 +20,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 
 add_executable(game "")
-target_link_libraries(game PUBLIC SDL2)
+target_link_libraries(game PUBLIC SDL2 SDL2_ttf)
 target_sources(game
   PUBLIC 
   ${CMAKE_CURRENT_LIST_DIR}/src/main.c  
@@ -32,3 +32,5 @@ target_include_directories(game
   )
 
 install(TARGETS game DESTINATION bin)
+
+file(COPY fonts/Crazy-Pixel.ttf DESTINATION bin)

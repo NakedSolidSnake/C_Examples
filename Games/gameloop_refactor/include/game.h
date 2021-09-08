@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -39,10 +40,12 @@ typedef struct
 {
     SDL_Window *window;
     SDL_Renderer *renderer;
+    TTF_Font *font;
     bool is_running;
     int last_frame_time;
     Object paddle;
     Object ball;
+    unsigned int points;
 } Game;
 
 typedef struct 

@@ -1,5 +1,11 @@
 #include <ncurses.h>
 
+/*
+
+sudo apt-get install libncurses5-dev
+
+*/
+
 int main()
 {
     initscr();

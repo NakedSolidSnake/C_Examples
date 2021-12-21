@@ -1,0 +1,7 @@
+gcc -Wall -Wextra -o 00-hello-world.out 00-hello-world.c $(pkg-config gtk+-3.0 --cflags --libs)
+gcc -Wall -Wextra -o 00-hello-world_v2.out 00-hello-world_v2.c $(pkg-config gtk+-3.0 --cflags --libs)
+gcc -Wall -Wextra -o 01-simple_window.out 01-simple_window.c $(pkg-config gtk+-3.0 --cflags --libs)
+gcc -Wall -Wextra -o 02-gtk_site_example.out 02-gtk_site_example.c $(pkg-config gtk+-3.0 --cflags --libs)
+gcc -Wall -Wextra -o 03-button.out 03-button.c $(pkg-config gtk+-3.0 --cflags --libs)
+gcc -Wall -Wextra -o 03-button_window.out 03-button_window.c $(pkg-config gtk+-3.0 --cflags --libs)
+gcc -Wall -Wextra -o 04-button-label.out 04-button-label.c $(pkg-config gtk+-3.0 --cflags --libs)

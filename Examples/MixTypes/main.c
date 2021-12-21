@@ -9,7 +9,7 @@ typedef enum
     TYPE_FUNCTION
 }eType;
 
-typedef struct Types
+typedef struct
 {
     eType type;
     void *data;
@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
     char *string = "String";
 
     Types_t types[4] = {
-        {.type = TYPE_INT, .data = &a},
-        {.type = TYPE_FLOAT, .data = &dec},
-        {.type = TYPE_STRING, .data = string},
+        {.type = TYPE_INT,      .data = &a},
+        {.type = TYPE_FLOAT,    .data = &dec},
+        {.type = TYPE_STRING,   .data = string},
         {.type = TYPE_FUNCTION, .data = print}
     };
 

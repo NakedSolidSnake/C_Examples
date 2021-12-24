@@ -1,4 +1,4 @@
-#include <product_controller.h>
+#include <product_udp_controller.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -9,7 +9,7 @@ static char buffer[BUFFER_LEN];
 
 static void on_receive(const char *buffer, size_t buffer_size, void *data)
 {
-    product_controller_t *controller = (product_controller_t *)data;
+    product_udp_controller_t *controller = (product_udp_controller_t *)data;
     if (strncmp (buffer, "add", 3) == 0)
     {
         controller->base->add_product (controller->base, NULL);
@@ -31,20 +31,20 @@ static void on_receive(const char *buffer, size_t buffer_size, void *data)
     }
 }
 
-bool product_controller_init (product_controller_t *controller)
+bool product_udp_controller_init (product_udp_controller_t *controller)
 {
     bool status = false;
 
     if (controller)
     {
-        memset (controller, 0, sizeof (product_controller_t));
+        memset (controller, 0, sizeof (product_udp_controller_t));
         status = true;
     }
 
     return status;
 }
 
-bool product_controller_open (product_controller_t *controller, product_service_base_t *service_base)
+bool product_udp_controller_open (product_udp_controller_t *controller, product_service_base_t *service_base)
 {
     bool status = false;
 
@@ -64,13 +64,13 @@ bool product_controller_open (product_controller_t *controller, product_service_
     return status;
 }
 
-bool product_controller_run (product_controller_t *controller)
+bool product_udp_controller_run (product_udp_controller_t *controller)
 {
     while (true)
         UDP_Server_Run (&controller->server, controller);
 }
 
-bool product_controller_close (product_controller_t *controller)
+bool product_udp_controller_close (product_udp_controller_t *controller)
 {
-    return product_controller_init (controller);
+    return product_udp_controller_init (controller);
 }

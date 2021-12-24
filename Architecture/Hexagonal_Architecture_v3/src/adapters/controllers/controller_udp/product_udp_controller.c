@@ -31,8 +31,9 @@ static void on_receive(const char *buffer, size_t buffer_size, void *data)
     }
 }
 
-bool product_udp_controller_init (product_udp_controller_t *controller)
+bool product_udp_controller_init (void *object)
 {
+    product_udp_controller_t *controller = (product_udp_controller_t *)object;
     bool status = false;
 
     if (controller)
@@ -44,13 +45,13 @@ bool product_udp_controller_init (product_udp_controller_t *controller)
     return status;
 }
 
-bool product_udp_controller_open (product_udp_controller_t *controller, product_service_base_t *service_base)
+bool product_udp_controller_open (void *object, product_service_base_t *service_base)
 {
     bool status = false;
+    product_udp_controller_t *controller = (product_udp_controller_t *)object;
 
     if (controller && service_base)
     {
-        // memcpy (&controller->base, service_base, sizeof (product_service_base_t));
         controller->base = service_base;
 
         controller->server.on_receive_message = on_receive;        
@@ -64,13 +65,43 @@ bool product_udp_controller_open (product_udp_controller_t *controller, product_
     return status;
 }
 
-bool product_udp_controller_run (product_udp_controller_t *controller)
+bool product_udp_controller_run (void *object)
 {
+    product_udp_controller_t *controller = (product_udp_controller_t *)object;
+
+    printf ("Server running on port %d\n", controller->server.port);
+
     while (true)
         UDP_Server_Run (&controller->server, controller);
+
+    return true;
 }
 
-bool product_udp_controller_close (product_udp_controller_t *controller)
+bool product_udp_controller_close (void *object)
 {
-    return product_udp_controller_init (controller);
+    product_udp_controller_t *controller = (product_udp_controller_t *)object;
+    bool status = false;
+
+    if (controller)
+    {
+        memset (controller, 0, sizeof (product_udp_controller_t));
+        status = true;
+    }
+
+    return status;
+}
+
+controller_base_t product_udp_create_base (void)
+{
+    static product_udp_controller_t udp_controller;
+    static controller_base_t base = 
+    {
+        .object = &udp_controller,
+        .init  = product_udp_controller_init,
+        .open  = product_udp_controller_open,
+        .run   = product_udp_controller_run,
+        .close = product_udp_controller_close
+    };
+
+    return base;
 }

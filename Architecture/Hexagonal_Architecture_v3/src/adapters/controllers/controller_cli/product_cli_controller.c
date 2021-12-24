@@ -39,8 +39,9 @@ static void *on_selected (uint8_t index, void *data)
     return NULL;
 }
 
-bool product_cli_controller_init (product_cli_controller_t *controller)
+bool product_cli_controller_init (void *object)
 {
+    product_cli_controller_t *controller = (product_cli_controller_t *)object;
     bool status = false;
 
     if (controller)
@@ -53,8 +54,9 @@ bool product_cli_controller_init (product_cli_controller_t *controller)
     return status;
 }
 
-bool product_cli_controller_open (product_cli_controller_t *controller, product_service_base_t *service_base)
+bool product_cli_controller_open (void *object, product_service_base_t *service_base)
 {
+    product_cli_controller_t *controller = (product_cli_controller_t *)object;
     bool status = false;
 
     if (controller && service_base)
@@ -68,13 +70,39 @@ bool product_cli_controller_open (product_cli_controller_t *controller, product_
     return status;
 }
 
-bool product_cli_controller_run (product_cli_controller_t *controller)
+bool product_cli_controller_run (void *object)
 {
+    product_cli_controller_t *controller = (product_cli_controller_t *)object;
     cli_run (&controller->cli, controller);
     return true;
 }
 
-bool product_cli_controller_close (product_cli_controller_t *controller)
+bool product_cli_controller_close (void *object)
 {
-    return product_cli_controller_init (controller);
+    product_cli_controller_t *controller = (product_cli_controller_t *)object;
+     bool status = false;
+
+    if (controller)
+    {
+        memset (controller, 0, sizeof (product_cli_controller_t));        
+        status = true;
+    }
+
+    return status;
+
+}
+
+controller_base_t product_cli_create_base (void)
+{
+    static product_cli_controller_t cli_controller;
+    static controller_base_t base = 
+    {
+        .object = &cli_controller,
+        .init  = product_cli_controller_init,
+        .open  = product_cli_controller_open,
+        .run   = product_cli_controller_run,
+        .close = product_cli_controller_close
+    };
+
+    return base;
 }

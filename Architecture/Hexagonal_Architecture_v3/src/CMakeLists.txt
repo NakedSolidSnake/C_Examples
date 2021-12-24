@@ -22,10 +22,11 @@ target_sources(hexagon
   ${CMAKE_CURRENT_LIST_DIR}/domain/model/product.c
   ${CMAKE_CURRENT_LIST_DIR}/domain/services/service.c
   ${CMAKE_CURRENT_LIST_DIR}/adapters/repository/product_repository.c
-  ${CMAKE_CURRENT_LIST_DIR}/adapters/controller_udp/product_udp_controller.c
-  ${CMAKE_CURRENT_LIST_DIR}/adapters/controller_udp/udp/udp.c
-  ${CMAKE_CURRENT_LIST_DIR}/adapters/controller_cli/product_cli_controller.c
-  ${CMAKE_CURRENT_LIST_DIR}/adapters/controller_cli/cli/cli.c
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_factory.c
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_udp/product_udp_controller.c
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_udp/udp/udp.c
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_cli/product_cli_controller.c
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_cli/cli/cli.c
   )
 target_include_directories(hexagon 
   PUBLIC 
@@ -33,8 +34,11 @@ target_include_directories(hexagon
   ${CMAKE_CURRENT_LIST_DIR}/domain/services
   ${CMAKE_CURRENT_LIST_DIR}/domain/model
   ${CMAKE_CURRENT_LIST_DIR}/adapters/repository
-  ${CMAKE_CURRENT_LIST_DIR}/adapters/controller_udp
-  ${CMAKE_CURRENT_LIST_DIR}/adapters/controller_udp/udp
-  ${CMAKE_CURRENT_LIST_DIR}/adapters/controller_cli
-  ${CMAKE_CURRENT_LIST_DIR}/adapters/controller_cli/cli
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_udp
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_udp/udp
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_cli
+  ${CMAKE_CURRENT_LIST_DIR}/adapters/controllers/controller_cli/cli
+
+  /adapters/controllers/controller_cli/product_cli_controller.c
   )

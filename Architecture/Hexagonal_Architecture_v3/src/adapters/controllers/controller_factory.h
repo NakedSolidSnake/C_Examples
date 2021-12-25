@@ -9,12 +9,7 @@ typedef enum
     controller_type_cli
 } controller_type_t;
 
-typedef struct 
-{
-    controller_base_t base;    
-} controller_t;
-
-controller_t controller_create (controller_type_t type);
+controller_base_t controller_factory_create (controller_type_t type);
 
 
 #endif /* CONTROLLER_FACTORY_H_ */

@@ -3,17 +3,17 @@
 #include <product_cli_controller.h>
 
 
-controller_t controller_create (controller_type_t type)
+controller_base_t controller_factory_create (controller_type_t type)
 {
-    controller_t controler;
+    controller_base_t controler;
     if (type == controller_type_udp)
     {
-        controler.base = product_udp_create_base();
+        controler = product_udp_create_base();
     }
 
     else if (type == controller_type_cli)
     {
-        controler.base = product_cli_create_base();
+        controler = product_cli_create_base();
     }
 
     return controler;
